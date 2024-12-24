@@ -100,7 +100,7 @@ async def async_chat_completion(**kwargs):
                     messages=messages, 
                     stream=True,
                     temperature=0.0,
-                    base_url = "http://36.103.239.217:9005/starvlm/v1",
+                    base_url = "xxxxx/starvlm/v1",
                     api_key="emty",
                 )
                 texts = ""
@@ -135,7 +135,7 @@ def chat_completion(**kwargs):
             messages=messages, 
             stream=True,
             temperature=0.0,
-            base_url = "http://36.103.239.217:9005/starvlm/v1",
+            base_url = "xxxx/starvlm/v1",
             api_key="emty",
         )
         texts = ""
