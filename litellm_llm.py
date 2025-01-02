@@ -9,8 +9,39 @@ import asyncio
 import random
 from PIL import Image
 from io import BytesIO
+import tiktoken
 
 import loguru
+
+
+tiktonken_encoder = tiktoken.get_encoding("cl100k_base")
+
+
+def num_tokens_from_string(string: str) -> int:
+    """Returns the number of tokens in a text string."""
+    try:
+        return len(tiktonken_encoder.encode(string))
+    except Exception:
+        return 0
+
+
+def get_ttft():
+    '''
+    获取首个字符出现的时间
+    '''
+    pass
+def get_ttop():
+    '''
+    获取decode token的平均间隔时间
+    
+    '''
+    pass
+def get_throughput():
+    '''
+    获取所有all tokens
+    '''
+    pass
+
 
 
 
@@ -54,7 +85,7 @@ def single_measure_execution_time(func):
 
 
 # image_path = "datasets/images/dda5077ff17c4c099d103d8453448a46.png"
-image_path = "datasets/tables_images_save/《地下防水工程质量验收规范 GB50208-2011》_3_.png"
+image_path = "test_data/images/aee000a0-75b9-2c97-437d-72d658d25b24.jpg"
 
 def image_to_base64(image_path):
 
@@ -74,6 +105,7 @@ def image_to_base64(image_path):
         return f'data:image/{mime_type};base64,{img_base64}'
     
 all_texts = []
+all_tokens_list = []
 
 def build_image_prompt():
         user_content = [
@@ -100,7 +132,8 @@ async def async_chat_completion(**kwargs):
                     messages=messages, 
                     stream=True,
                     temperature=0.0,
-                    base_url = "xxxxx/starvlm/v1",
+                    # base_url = "http://172.18.204.2:9992/v1",
+                    base_url = kwargs.get("base_url"),
                     api_key="emty",
                 )
                 texts = ""
@@ -115,6 +148,8 @@ async def async_chat_completion(**kwargs):
                     "id": str(uuid.uuid4()),
                     "text":texts,
                 }
+                all_tokens = num_tokens_from_string(texts)
+                all_tokens_list.append(all_tokens)
                 all_texts.append(data)
                 return texts.strip()
             except Exception as e:
@@ -135,7 +170,7 @@ def chat_completion(**kwargs):
             messages=messages, 
             stream=True,
             temperature=0.0,
-            base_url = "xxxx/starvlm/v1",
+            base_url = kwargs.get("base_url"),
             api_key="emty",
         )
         texts = ""
@@ -150,6 +185,8 @@ def chat_completion(**kwargs):
             "id": str(uuid.uuid4()),
             "text":texts,
         }
+        all_tokens = num_tokens_from_string(texts)
+        all_tokens_list.append(all_tokens)
         all_texts.append(data)
         return texts.strip()
     except Exception as e:
@@ -177,7 +214,7 @@ def semaphore_do_work_no_async(semaphore, thread_name,**kwargs):
 
 
 @single_measure_execution_time  
-def execute_threading_max(exe_func,max_thread_num=32):
+def execute_threading_max(exe_func,base_url:str,max_thread_num=16):
     max_threads = max_thread_num
     semaphore = threading.Semaphore(max_threads)
     threads=[]
@@ -189,7 +226,8 @@ def execute_threading_max(exe_func,max_thread_num=32):
                             "semaphore":semaphore,
                             "thread_name":thread_name,
                             "max_retries":  2,
-                            "model_name":"hosted_vllm/InternVL2-40B"
+                            "model_name":"hosted_vllm/starvlm-qwen2_vl-7b",
+                            "base_url":base_url
                         }
                     )
                 ##执行线程
@@ -216,13 +254,13 @@ def execute_task():
         result = future.result()
         print(result)
     
-
-
-
-
 if __name__ == "__main__":
     loguru.logger.info(f"test litellm")
+    import numpy as np
     # execute_threading_max(exe_func=semaphore_do_work)
-    execute_threading_max(exe_func=semaphore_do_work_no_async)
+    base_urls = ["http://xxxx:9992/v1"]
+    for base_url in base_urls:
+        execute_threading_max(exe_func=semaphore_do_work_no_async,base_url=base_url)
+    loguru.logger.info(f"all tokens :{np.sum(all_tokens_list)}")
     
     
