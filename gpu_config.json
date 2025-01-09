@@ -1,0 +1,42 @@
+{
+    "A40":{
+        "gpu_memory":48,
+        "memory_bandwidth":696,
+        "peak_fp32_tflops":37.4,
+        "peak_fp16_tflops":149.7,
+        "peak_bfp16_tflops":149.7,
+        "peak_int8_tensor_tops":299.3,
+        "peak_int4_tensor_tops":598.7,
+        "max_power_consumption":300
+    },
+    "A100_PCIe_80GB": {
+        "gpu_memory": 80,
+        "memory_bandwidth": 1935,
+        "peak_fp32_tflops": 19.5,
+        "peak_fp16_tflops": 312,
+        "peak_bfp16_tflops": 312,
+        "peak_int8_tensor_tops": 624,
+        "peak_int4_tensor_tops": 1248,
+        "max_power_consumption": 300
+    },
+    "A100_SXM_80GB": {
+        "gpu_memory": 80,
+        "memory_bandwidth": 2039,
+        "peak_fp32_tflops": 19.5,
+        "peak_fp16_tflops": 312,
+        "peak_bfp16_tflops": 312,
+        "peak_int8_tensor_tops": 624,
+        "peak_int4_tensor_tops": 1248,
+        "max_power_consumption": 400
+    },
+    "H100_SXM": {
+        "gpu_memory": 80,
+        "memory_bandwidth": 3350,
+        "peak_fp32_tflops": 67,
+        "peak_fp16_tflops": 1979,
+        "peak_bfp16_tflops": 1979,
+        "peak_int8_tensor_tops": 3958,
+        "peak_int4_tensor_tops": null,
+        "max_power_consumption": 700
+}
+}
