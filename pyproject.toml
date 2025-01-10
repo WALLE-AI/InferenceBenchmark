@@ -1,0 +1,17 @@
+[project]
+name = "inferencebenckmark"
+version = "0.0.1"
+description = "inferencebenchmark"
+authors = [
+    {name = "WALL-AI",email = "gaojing850063636@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gradio (>=5.11.0,<6.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

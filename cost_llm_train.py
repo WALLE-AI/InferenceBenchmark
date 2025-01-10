@@ -6,14 +6,14 @@ llm训练的成本计算
 import json
 import loguru
 class EstimateTrainLLMGPU():
-    def __init__(self,model_name:str="Llama_2_13b_chat_hf",gpu_type="A100_PCIe_80GB",train_tokens=pow(10,12)):
+    def __init__(self,model_name:str="phi-4",gpu_num=1,gpu_type="H100_SXM",train_tokens=9.8):
         self.tensorType={
             "float32":4,
             "bfloat16":2,
             "float16":2,
             "int4":1
             }
-        self.gpu_num = 96
+        self.gpu_num = gpu_num
         self.gpu_use_coefficient=0.4
         self.gpu_type = gpu_type
         self.train_tokens=train_tokens
@@ -39,9 +39,9 @@ class EstimateTrainLLMGPU():
     
     
     def calculate_llm_train_time(self):
-        train_time = (8*self.train_tokens*self.calculate_llm_paremeter())/(self.gpu_num*self.gpu_config['peak_bfp16_tflops']*self.gpu_use_coefficient*pow(10,12))
-        train_time_hours = train_time/3600
-        return train_time_hours
+        train_time = (8*self.train_tokens*self.calculate_llm_paremeter()*pow(10,12))/(self.gpu_num*self.gpu_config['peak_bfp16_tflops']*self.gpu_use_coefficient*pow(10,12))
+        train_time_day = train_time/3600/24
+        return train_time_day
     
     def calculate_llm_train_gpu_memory(self):
         pass
