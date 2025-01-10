@@ -29,7 +29,7 @@ def get_gpu_list():
 def llm_gpu_inference_memory_func(model_name,concurrent, gen_need_tokens):
     model = EstimateInferenceLLMGPU(model_name=model_name[0],concurrent=concurrent,need_tokens=gen_need_tokens)
     result = model.select_gpu_type()
-    return result
+    return json.dumps(result[0])
 
 def estimate_llm_train_day(model_name,gpu_num,gpu_type,train_tokens):
     model = EstimateTrainLLMGPU(model_name[0],gpu_num,gpu_type[0],train_tokens)
@@ -48,7 +48,7 @@ with gr.Blocks() as app:
         concurrent = gr.Slider(minimum=1, maximum=100, step=1,label="concurrent", info="Choose concurrent between 1 and 100")
         gen_need_tokens = gr.Slider(minimum=1, maximum=8196, step=1024,label="Tokens", info="Choose concurrent between 1 and 8196")
         btn = gr.Button("Run")
-        btn.click(llm_gpu_inference_memory_func, inputs=[model_name,concurrent, gen_need_tokens], outputs=gr.Text())
+        btn.click(llm_gpu_inference_memory_func, inputs=[model_name,concurrent, gen_need_tokens], outputs= gr.DataFrame())
         
     with gr.Tab("LLM Train",elem_classes="tab-label"):
         model_name=gr.Dropdown(
