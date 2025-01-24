@@ -2,6 +2,7 @@
 llm训练的成本计算
 算力（FLOPS）C = 6ND（N为模型参数，D为训练的tokens数）公式计算
 训练时间=(8*tokens*model_parameter)/gpu个数*GPU峰值算力（flops）*gpy利用率（0.3-0.55）
+https://mp.weixin.qq.com/s/060mhYiiFroZfakB7OK71g torch关于模型参数计算，主要还是根据网路中权值参数进行计算 张量并行与流水并行之间测试
 '''
 import json
 import loguru
